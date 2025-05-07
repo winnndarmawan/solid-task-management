@@ -1,0 +1,17 @@
+root = "."
+tmp_dir = "tmp"
+
+[build]
+  cmd = "go build -o ./tmp/main.exe ./cmd"
+  bin = "tmp/main.exe"
+  full_bin = "./tmp/main.exe"
+  include_ext = ["go"]
+  exclude_dir = ["tmp", "vendor", "node_modules"]
+  include_dir = ["cmd", "internal"]
+
+[log]
+  time = true
+  color = true
+
+[debug]
+  enable = true
