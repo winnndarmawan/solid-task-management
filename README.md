@@ -1,2 +1,2 @@
-# solid-task-management
-A minimalist CRUD-based task management system designed to demonstrate SOLID principles.
+# SOLID Task Management API
+A minimalist CRUD-based task management system with strong focus on clean architecture and adherence to SOLID principles.
