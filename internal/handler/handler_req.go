@@ -11,3 +11,10 @@ type FetchTaskRequest struct {
 	Page        int64  `query:"page"`
 	PerPage     int64  `query:"perPage"`
 }
+
+type UpateTaskRequest struct {
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	ID          string `json:"_id"`
+	Status      string `json:"status"`
+}

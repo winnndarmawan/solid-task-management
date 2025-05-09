@@ -17,6 +17,7 @@ type (
 		Create(ctx context.Context, payload task.CreateReq) (*task.Task, error)
 		FindOne(ctx context.Context, id string) (*task.Task, error)
 		FindAll(ctx context.Context, payload task.FetchTasksReq) ([]*task.Task, error)
+		Update(ctx context.Context, payload task.UpdateReq) (*task.Task, error)
 	}
 
 	TaskRepositoryImpl struct {
@@ -54,8 +55,8 @@ func (r TaskRepositoryImpl) Create(ctx context.Context, spec task.CreateReq) (*t
 	}
 
 	insertedID := res.InsertedID.(primitive.ObjectID).Hex()
-
 	newTask, err := r.FindOne(ctx, insertedID)
+
 	if err != nil {
 		return nil, err
 	}
@@ -99,4 +100,35 @@ func (r TaskRepositoryImpl) FindAll(ctx context.Context, payload task.FetchTasks
 		return nil, err
 	}
 	return tasks, nil
+}
+
+func (r TaskRepositoryImpl) Update(ctx context.Context, payload task.UpdateReq) (*task.Task, error) {
+	// Convert the ID to a MongoDB ObjectID
+	taskId, err := primitive.ObjectIDFromHex(payload.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	// Create the update document
+	update := bson.M{
+		"$set": bson.M{
+			"title":       payload.Title,
+			"description": payload.Description,
+			"status":      payload.Status,
+		},
+	}
+
+	// Perform the update operation
+	_, err = r.tasksCollection.UpdateOne(ctx, bson.M{"_id": taskId}, update)
+	if err != nil {
+		return nil, err
+	}
+
+	// Fetch and return the updated task
+	updatedTask, err := r.FindOne(ctx, payload.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	return updatedTask, nil
 }

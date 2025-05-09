@@ -8,6 +8,7 @@ import (
 type CreateReq struct {
 	Title       string
 	Description string
+	Status      TaskStatus
 }
 
 func (s *CreateReq) Validate() error {
@@ -27,4 +28,11 @@ type FetchTasksReq struct {
 	Description string
 	Page        int64
 	PerPage     int64
+}
+
+type UpdateReq struct {
+	ID          string
+	Title       string
+	Description string
+	Status      TaskStatus
 }

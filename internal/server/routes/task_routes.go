@@ -9,5 +9,6 @@ import (
 func RegisterTaskRoutes(e *echo.Group, h *handler.TaskHandler) {
 	e.POST("/create", h.Create)
 	e.GET("/list", h.Get)
+	e.PATCH("/list", h.Update)
 
 }

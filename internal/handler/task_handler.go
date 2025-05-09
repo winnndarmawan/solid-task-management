@@ -61,3 +61,24 @@ func (h *TaskHandler) Get(ec echo.Context) error {
 
 	return ec.JSON(http.StatusCreated, task)
 }
+
+func (h *TaskHandler) Update(ec echo.Context) error {
+	var req UpateTaskRequest
+	if err := ec.Bind(&req); err != nil {
+		return ec.JSON(http.StatusBadRequest, "BAD_REQUEST")
+	}
+
+	ctx := ec.Request().Context()
+	task, err := h.taskService.UpdateTask(ctx, dom.UpdateReq{
+		Title:       req.Title,
+		Description: req.Description,
+		ID:          req.ID,
+		Status:      dom.TaskStatus(req.Status),
+	})
+
+	if err != nil {
+		return ec.JSON(http.StatusInternalServerError, "CREATE_FAILED")
+	}
+
+	return ec.JSON(http.StatusCreated, task)
+}
